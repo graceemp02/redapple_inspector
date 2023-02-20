@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/iamredapple.com/operator/static/css/main.73be6a4a.css",
+    "main.js": "/iamredapple.com/operator/static/js/main.b2d21710.js",
+    "static/media/loginBanner.jpg": "/iamredapple.com/operator/static/media/loginBanner.3a2fab8a7a18f358faae.jpg",
+    "static/media/logo.png": "/iamredapple.com/operator/static/media/logo.78ba43012bd49671f3dd.png",
+    "index.html": "/iamredapple.com/operator/index.html",
+    "main.73be6a4a.css.map": "/iamredapple.com/operator/static/css/main.73be6a4a.css.map",
+    "main.b2d21710.js.map": "/iamredapple.com/operator/static/js/main.b2d21710.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.73be6a4a.css",
+    "static/js/main.b2d21710.js"
+  ]
+}
