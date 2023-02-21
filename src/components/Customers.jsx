@@ -109,11 +109,11 @@ function Customers() {
                   <ListItemButton
                     sx={{ padding: '0.3rem 1rem' }}
                     divider={filteredCustomers.length - 1 === row.id ? false : true}
-                    key={row.id}
+                    key={row.name}
                     selected={selectedIndex === row.id}
                     onClick={event => handleListItemClick(event, row.id)}>
                     <ListItemText
-                      key={row.id}
+                      key={row.name}
                       primary={row.name}
                       sx={{ m: 0, fontSize: '2vh !important' }}
                     />

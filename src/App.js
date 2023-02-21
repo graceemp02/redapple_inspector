@@ -12,8 +12,8 @@ let theme = createTheme({
 function App() {
   const [clientID, setClientID] = useState();
   return (
-    <BrowserRouter>
-      {/* <BrowserRouter basename='/inspector'> */}
+    // <BrowserRouter>
+    <BrowserRouter basename='/inspector'>
       <ThemeProvider theme={theme}>
         <ClientContext.Provider value={{ clientID, setClientID }}>
           <Routes>

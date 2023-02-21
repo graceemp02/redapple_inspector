@@ -46,7 +46,7 @@ const DateInput = () => {
           setDialog({
             status: true,
             title: 'Success',
-            msg: ` Updaded Successfully`,
+            msg: ` Updated Successfully`,
           });
         } else {
           setDialog({
@@ -83,7 +83,7 @@ const DateInput = () => {
         </LocalizationProvider>
         <div className='text-btn-status' style={{ display: 'flex' }}>
           <Button color='success' type='submit' variant='contained' sx={{ mr: 1 }}>
-            Upload
+            Update
           </Button>
 
           {shrk ? (

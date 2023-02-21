@@ -1,8 +1,7 @@
 /** @format */
 
-import { Alert, Button, Typography } from '@mui/material';
-import Checkbox from '@mui/material/Checkbox';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { Alert, Button, Typography, Checkbox } from '@mui/material';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import MyDialog from './MyDialog';
 import { ClientContext } from '../context/ClientContext';
@@ -42,7 +41,7 @@ const CheckInput = ({ lable, name }) => {
           setDialog({
             status: true,
             title: 'Success',
-            msg: ` Updaded Successfully`,
+            msg: ` Updated Successfully`,
           });
         } else {
           setStatus(value);

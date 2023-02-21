@@ -4,11 +4,10 @@ import { styled } from '@mui/material/styles';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { Button, Stack, TableRow, Alert } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
-import { saveAs } from 'file-saver';
 import axios from 'axios';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-
 import { ClientContext } from '../context/ClientContext';
+import MyDialog from './MyDialog';
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.white,
@@ -36,6 +35,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const MyTableRow = ({ lable, name }) => {
   const { clientID } = useContext(ClientContext);
   const [status, setStatus] = useState(0);
+  const [dialog, setDialog] = useState({ status: false, msg: '', title: '' });
   const CancelToken = axios.CancelToken;
   const source = CancelToken.source();
   const getStatus = async () => {
@@ -56,11 +56,8 @@ const MyTableRow = ({ lable, name }) => {
   }, [clientID]);
   useEffect(() => {
     const inv = setInterval(() => {
-      if (status === 0) {
-        getStatus();
-      } else {
-        clearInterval(inv);
-      }
+      console.log('Fetching Status');
+      getStatus();
     }, 1000);
     return () => clearInterval(inv);
   }, []);
@@ -68,21 +65,30 @@ const MyTableRow = ({ lable, name }) => {
     await axios
       .get(`action.php?id=${clientID}&action=${e.target.value}&name=${name}`)
       .then(res => {
-        console.log(res.data);
-        saveAs(res.data);
-        // const url = `${axios.defaults.baseURL}/../company/${res.data.res}`;
-        // const fileName = url.split('/').pop();
-        // fetch(url)
-        //   .then(res => res.blob())
-        //   .then(blob => {
-        //     const blobUrl = window.URL.createObjectURL(new Blob(blob));
-        //     const aTag = document.createElement('a');
-        //     aTag.href = blobUrl;
-        //     aTag.download = fileName;
-        //     document.body.appendChild(aTag);
-        //     aTag.click();
-        //     aTag.remove();
-        //   });
+        if (res.data.res === 'true') {
+          getStatus();
+          setDialog({
+            status: true,
+            title: 'Success',
+            msg: `Status Updated Successfully`,
+          });
+        }
+      })
+      .catch(err => console.log(err));
+  };
+  const handleDownload = async () => {
+    await axios
+      .get(`action.php?id=${clientID}&action=1&name=${name}`)
+      .then(res => {
+        const url = `${axios.defaults.baseURL}/../company/${res.data.res}`;
+        const fileName = url.split('/').pop();
+        const aTag = document.createElement('a');
+        aTag.href = url;
+        aTag.download = fileName;
+        aTag.target = '_blank';
+        document.body.appendChild(aTag);
+        aTag.click();
+        aTag.remove();
       })
       .catch(err => console.log(err));
   };
@@ -111,13 +117,10 @@ const MyTableRow = ({ lable, name }) => {
                 color='error'>
                 Reject
               </Button>
-              <a
-                href={`${axios.defaults.url}action.php?id=${clientID}&action=1&name=${name}`}
-                download>
-                <Button value='1' size='small' variant='contained'>
-                  Download
-                </Button>
-              </a>
+
+              <Button onClick={handleDownload} size='small' variant='contained'>
+                Download
+              </Button>
             </>
           )}
         </Stack>
@@ -153,6 +156,15 @@ const MyTableRow = ({ lable, name }) => {
             </Alert>
           )}
         </div>
+        {dialog.status && (
+          <MyDialog
+            title={dialog.title}
+            des={dialog.msg}
+            actions={[
+              { onClick: () => setDialog({ status: false }), color: 'primary', text: 'OK' },
+            ]}
+          />
+        )}
       </StyledTableCell>
     </StyledTableRow>
   );
