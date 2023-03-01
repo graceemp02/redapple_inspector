@@ -34,39 +34,47 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 const MyTableRow = ({ lable, name }) => {
   const { clientID } = useContext(ClientContext);
+
   const [status, setStatus] = useState(0);
   const [dialog, setDialog] = useState({ status: false, msg: '', title: '' });
-  const CancelToken = axios.CancelToken;
-  const source = CancelToken.source();
-  const getStatus = async () => {
-    await axios
-      .get(`../company/fileInput.php?id=${clientID}&status=${name}Status`, {
-        cancelToken: source.token,
-      })
-      .then(res => {
-        setStatus(+res.data.res);
-      })
-      .catch(err => console.log(err.message));
-  };
+
   useEffect(() => {
-    getStatus();
-    return () => {
-      source.cancel();
-    };
-  }, [clientID]);
-  useEffect(() => {
-    const inv = setInterval(() => {
-      console.log('Fetching Status');
-      getStatus();
+    const interval = setInterval(() => {
+      axios
+        .get(`../company/fileInput.php?id=${clientID}&status=${name}Status`)
+        .then(res => {
+          setStatus(+res.data.res);
+        })
+        .catch(err => console.log(err.message));
     }, 1000);
-    return () => clearInterval(inv);
-  }, []);
+    return () => clearInterval(interval);
+  }, [clientID]);
+  // useEffect(() => {
+  //   console.log('Client changed');
+  //   setInterval(() => {
+  //     console.count(clientID);
+  //     axios
+  //       .get(
+  //         `../company/fileInput.php?id=${localStorage.getItem('ins_client')}&status=${name}Status`
+  //       )
+  //       .then(res => {
+  //         setStatus(+res.data.res);
+  //       })
+  //       .catch(err => console.log(err.message));
+  //   }, 2000);
+  //   // return () => clearInterval(inv);
+  // }, [clientID]);
   const handleAction = async e => {
     await axios
       .get(`action.php?id=${clientID}&action=${e.target.value}&name=${name}`)
       .then(res => {
         if (res.data.res === 'true') {
-          getStatus();
+          axios
+            .get(`../company/fileInput.php?id=${clientID}&status=${name}Status`)
+            .then(res => {
+              setStatus(+res.data.res);
+            })
+            .catch(err => console.log(err.message));
           setDialog({
             status: true,
             title: 'Success',

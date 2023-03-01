@@ -10,9 +10,8 @@ let theme = createTheme({
   typography: { color: 'black', button: { textTransform: 'none' } },
 });
 function App() {
-  const [clientID, setClientID] = useState();
+  const [clientID, setClientID] = useState(() => localStorage.getItem('ins_client'));
   return (
-    // <BrowserRouter>
     <BrowserRouter basename='/inspector'>
       <ThemeProvider theme={theme}>
         <ClientContext.Provider value={{ clientID, setClientID }}>

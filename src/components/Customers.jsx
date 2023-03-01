@@ -10,29 +10,29 @@ import axios from 'axios';
 import { ClientContext } from '../context/ClientContext';
 
 function Customers() {
-  const { setClientID } = useContext(ClientContext);
+  const { clientID, setClientID } = useContext(ClientContext);
   const [customers, setCustomers] = useState([]);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(() => clientID);
   const [query, setQuery] = useState('');
 
   useEffect(() => {
-    const CancelToken = axios.CancelToken;
-    const source = CancelToken.source();
     axios
-      .get('../customers.php', { cancelToken: source.token })
+      .get('../customers.php')
       .then(result => {
         setCustomers(result.data);
-        setSelectedIndex(result.data[0].id);
-        setClientID(result.data[0].id);
+        if (!clientID) {
+          console.log(clientID);
+          localStorage.setItem('ins_client', result.data[0].id);
+          setSelectedIndex(result.data[0].id);
+          setClientID(result.data[0].id);
+        }
       })
       .catch(error => console.log(error));
-    return () => {
-      source.cancel();
-    };
   }, []);
 
   const handleListItemClick = (e, index) => {
     e.preventDefault();
+    localStorage.setItem('ins_client', index);
     setSelectedIndex(index);
     setClientID(index);
   };

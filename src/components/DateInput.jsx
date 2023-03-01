@@ -12,7 +12,6 @@ import { ClientContext } from '../context/ClientContext';
 
 const DateInput = () => {
   const { clientID } = useContext(ClientContext);
-
   const [value, setValue] = useState(dayjs(new Date()));
   const [dialog, setDialog] = useState({ status: false, msg: '', title: '' });
   const [shrk, setShrk] = useState(false);
@@ -22,9 +21,10 @@ const DateInput = () => {
       .get(`checkInput.php?id=${clientID}&name=finishDate`)
       .then(res => {
         const data = res.data.res;
+        console.log(data);
         if (data) {
           setShrk(true);
-          ref.current.value = data;
+          setValue(data);
         } else {
           setShrk(false);
         }

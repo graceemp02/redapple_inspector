@@ -7,6 +7,7 @@ import MyDialog from './MyDialog';
 import { ClientContext } from '../context/ClientContext';
 
 const CheckInput = ({ lable, name }) => {
+  const selected = localStorage.getItem('ins_client');
   const { clientID } = useContext(ClientContext);
   const [dialog, setDialog] = useState({ status: false, msg: '', title: '' });
   const [value, setValue] = useState(false);
@@ -14,7 +15,7 @@ const CheckInput = ({ lable, name }) => {
 
   useEffect(() => {
     axios
-      .get(`checkInput.php?id=${clientID}&name=${name}`)
+      .get(`checkInput.php?id=${selected}&name=${name}`)
       .then(res => {
         const data = +res.data.res;
         if (data === 1) {
@@ -30,7 +31,7 @@ const CheckInput = ({ lable, name }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     let fd = new FormData();
-    fd.append('id', clientID);
+    fd.append('id', selected);
     fd.append('value', value ? 1 : 0);
     fd.append('name', name);
     await axios

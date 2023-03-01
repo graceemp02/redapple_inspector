@@ -41,9 +41,7 @@ const Layout = () => {
         </Toolbar>
       </AppBar>
       <div>
-        {/* <Paper sx={{ p: 1, m: 1 }}> */}
         <DashboardPage />
-        {/* </Paper> */}
       </div>
     </>
   );
