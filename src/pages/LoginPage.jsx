@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Logo from '../assets/logo.png';
 import LoginBanner from '../assets/loginBanner.jpg';
 import { useState, useRef, useEffect } from 'react';
+import ResetPasswordDialog from '../components/reset/ResetPasswordDialog';
 
 import axios from 'axios';
 import { Button, TextField, Grid, Typography, Box, Paper, CssBaseline, Link } from '@mui/material';
@@ -22,10 +23,10 @@ const theme = createTheme();
 
 function LoginPage() {
   const navigate = useNavigate();
+  const [dialog, setdialog] = useState(false);
   const id = localStorage.getItem('ins_id');
   useEffect(() => {
     if (id) {
-      console.log('Already Login');
       navigate('/');
     }
   }, []);
@@ -57,7 +58,9 @@ function LoginPage() {
       })
       .catch(error => console.log(error));
   };
-
+  const handleForgot = () => {
+    setdialog(true);
+  };
   return (
     <ThemeProvider theme={theme}>
       <Grid
@@ -120,13 +123,23 @@ function LoginPage() {
                 helperText={pwdError && 'Password Incorrent'}
               />
               <br />
-              <Button type='submit' variant='contained' sx={{ mt: 3, mb: 2 }}>
-                Login In
-              </Button>
+              <Grid container>
+                <Grid item xs>
+                  <Button type='submit' variant='contained' sx={{ mt: 3, mb: 2 }}>
+                    Login In
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Link onClick={handleForgot} sx={{ cursor: 'pointer' }} variant='body2'>
+                    Forgot password?
+                  </Link>
+                </Grid>
+              </Grid>
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
         </Grid>
+        {dialog && <ResetPasswordDialog />}
       </Grid>
     </ThemeProvider>
   );

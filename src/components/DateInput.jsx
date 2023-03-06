@@ -21,7 +21,6 @@ const DateInput = () => {
       .get(`checkInput.php?id=${clientID}&name=finishDate`)
       .then(res => {
         const data = res.data.res;
-        console.log(data);
         if (data) {
           setShrk(true);
           setValue(data);
