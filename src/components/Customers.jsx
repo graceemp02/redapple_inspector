@@ -21,7 +21,6 @@ function Customers() {
       .then(result => {
         setCustomers(result.data);
         if (!clientID) {
-          console.log(clientID);
           localStorage.setItem('ins_client', result.data[0].id);
           setSelectedIndex(result.data[0].id);
           setClientID(result.data[0].id);
@@ -103,24 +102,25 @@ function Customers() {
               overflow: 'auto',
               borderRadius: '1vh',
             }}>
-            {filteredCustomers.map(row => {
-              return (
-                <>
-                  <ListItemButton
-                    sx={{ padding: '0.3rem 1rem' }}
-                    divider={filteredCustomers.length - 1 === row.id ? false : true}
-                    key={row.name}
-                    selected={selectedIndex === row.id}
-                    onClick={event => handleListItemClick(event, row.id)}>
-                    <ListItemText
-                      key={row.name}
-                      primary={row.name}
-                      sx={{ m: 0, fontSize: '2vh !important' }}
-                    />
-                  </ListItemButton>
-                </>
-              );
-            })}
+            {filteredCustomers.length > 0 &&
+              filteredCustomers.map((row, index) => {
+                return (
+                  <>
+                    <ListItemButton
+                      sx={{ padding: '0.3rem 1rem' }}
+                      divider={filteredCustomers.length - 1 === row.id ? false : true}
+                      key={`${row.id}-${index}`}
+                      selected={selectedIndex === row.id}
+                      onClick={event => handleListItemClick(event, row.id)}>
+                      <ListItemText
+                        key={row.name}
+                        primary={row.name}
+                        sx={{ m: 0, fontSize: '2vh !important' }}
+                      />
+                    </ListItemButton>
+                  </>
+                );
+              })}
           </List>
         ) : (
           <Typography sx={{ textAlign: 'center', fontSize: '2vh', margin: '3vh', width: '100%' }}>

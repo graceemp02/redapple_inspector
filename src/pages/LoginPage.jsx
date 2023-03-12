@@ -126,7 +126,7 @@ function LoginPage() {
               <Grid container>
                 <Grid item xs>
                   <Button type='submit' variant='contained' sx={{ mt: 3, mb: 2 }}>
-                    Login In
+                    Login
                   </Button>
                 </Grid>
                 <Grid item>
